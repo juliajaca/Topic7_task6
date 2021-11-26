@@ -2,18 +2,54 @@ package com.example.topic7_task6;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class MainActivity extends ListActivity {
+    private ListView listView;
+    private ItemAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        listView = (ListView) findViewById(android.R.id.list);
+        ArrayList<Dessert> dessertList = new ArrayList<>();
+        dessertList.add(new Dessert(R.drawable.donut_circle, getResources().getString(R.string.donuts) ));
+        dessertList.add(new Dessert(R.drawable.icecream_circle,getResources().getString(R.string.ice_cream_sandwiches) ));
+        dessertList.add(new Dessert(R.drawable.froyo_circle, getResources().getString(R.string.froyo)  ));
+
+        mAdapter = new ItemAdapter(this,dessertList);
+        listView.setAdapter(mAdapter);
     }
+
+    public void onListItemClick(ListView l, View v, int position, long id){
+        super.onListItemClick(l, v, position, id);
+        //Toast.makeText(this, ""+position, Toast.LENGTH_LONG).show();
+        switch(position)
+        {
+            case 0 :
+                showDonutOrder(v);
+                break;
+            case 1 :
+                showIceCreamOrder(v);
+                break;
+            case 2:
+                showFroyoOrder(v);
+                break;
+            default :
+                Toast.makeText(this, "No has clicado nada", Toast.LENGTH_LONG).show();
+        }
+    }
+
 
     public void displayToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
